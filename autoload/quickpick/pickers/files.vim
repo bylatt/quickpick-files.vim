@@ -1,3 +1,8 @@
+if !exists('g:quickpick_files_command')
+  let g:quickpick_files_command = 'fd . -t f'
+endif
+
+let g:quickpick_files = 1
 function! quickpick#pickers#files#show(...) abort
     let id = quickpick#create({
         \   'on_change': function('s:on_change'),
@@ -10,7 +15,7 @@ endfunction
 
 function! s:get_files(refresh) abort
     if !exists('s:files') || a:refresh
-        let s:files = uniq(sort(split(system('fd . -t f'), '\n')))
+        let s:files = uniq(sort(split(system(g:quickpick_files_command), '\n')))
     endif
     return s:files
 endfunction
