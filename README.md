@@ -9,7 +9,7 @@ Plug 'clozed2u/quickpick-files.vim'
 
 ## Finder
 By default `quickpick-files.vim` use [fd](https://github.com/sharkdp/fd) as a finder command, so you need `fd` command in your `$PATH`.
-You can override finder command by setting `g:quickpick_files_command` variable, for example if you want to use `rg` instead of `fd` you can put line below into your vim config
+You can override finder command by set `g:quickpick_files_command` variable to your prefer command, for example if you want to use `rg` instead of `fd` you can put line below into your vim config
 ```vim
 let g:quickpick_files_command = 'rg --files'
 ```
