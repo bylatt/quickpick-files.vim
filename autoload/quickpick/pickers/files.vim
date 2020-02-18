@@ -1,8 +1,3 @@
-if !exists('g:quickpick_files_command')
-  let g:quickpick_files_command = 'fd . -t f'
-endif
-
-let g:quickpick_files = 1
 function! quickpick#pickers#files#show(...) abort
     let id = quickpick#create({
         \   'on_change': function('s:on_change'),
@@ -13,9 +8,25 @@ function! quickpick#pickers#files#show(...) abort
     return id
 endfunction
 
+function! s:add_files(dir) abort
+    let l:fs = []
+    for f in map(readdir(a:dir), 'a:dir . "/".  v:val')
+        if isdirectory(f)
+            let fs = fs + s:add_files(f)
+        else
+            call add(l:fs, f)
+        endif
+    endfor
+    return fs
+endfunction
+
 function! s:get_files(refresh) abort
     if !exists('s:files') || a:refresh
-        let s:files = uniq(sort(split(system(g:quickpick_files_command), '\n')))
+        if exists('g:quickpick_files_command')
+            let s:files = uniq(sort(split(system(g:quickpick_files_command), '\n')))
+        else
+            let s:files = uniq(sort(s:add_files(getcwd())))
+        endif
     endif
     return s:files
 endfunction
